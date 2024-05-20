@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTMX & Go - Test</title>
+    <title>HTMX & Go - Demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://unpkg.com/htmx.org@1.9.2"
@@ -15,13 +15,54 @@
 </head>
 
 <body class="container">
-    <h1> Hello World</h1>
 
-    {{range .Exercise}}
+    <div class="row mt-4 g-4">
+        <div class="col-8">
+            <h1 class="mb-4">Exercise List</h1>
 
-    <p> {{ .Movement}} - {{ .Weight}} - {{ .Sets}} - {{ .Reps}} </p>
+            <ul class="list-group fs-5 me-5" id="exercise-list">
+                {{ range .Exercises }}
+                {{ block "exercise-list-element" .}}
+                <li class="list-group-item bg-primary text-white"> {{ .Movement}} - {{ .Weight}} - {{ .Sets}} - {{
+                    .Reps}}</li>
 
-    {{end}}
+                {{ end }}
+                {{ end }}
+            </ul>
+        </div>
+
+        <div class="col-4">
+            <h1 class="mb-4">Add Exercise</h1>
+
+            <form hx-post="/add-exercise/" hx-target="#exercise-list" hx-swap="beforeend" hx-indicator="#spinner">
+                <div class="mb-2">
+                    <label for="exercise-title">Movement</label>
+                    <input type="text" name="title" id="exercise-movement" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="exercise-weight">Weight</label>
+                    <input type="text" name="director" id="exercise-weight" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="exercise-sets">Sets</label>
+                    <input type="text" name="director" id="exercise-sets" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="exercise-reps">Reps</label>
+                    <input type="text" name="director" id="exercise-reps" class="form-control" />
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">
+                    <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status"
+                        aria-hidden="true"></span>
+                    Submit
+                </button>
+            </form>
+        </div>
+
+    </div>
 
 </body>
 
